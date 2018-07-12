@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-APP="cnapps"
+APP="cnapp-flask"
 
 VERSION=$(shell \
 	grep RELEASE cnapps/version.py \
@@ -31,8 +31,7 @@ DB_ENGINE = "cockroachdb://cnapps@192.168.99.100:32007/cnapps?sslmode=disable"
 SHELL = /bin/bash
 DOCKER = docker
 
-NAMESPACE=nlamirault
-IMAGE=cnapps-python-flask
+IMAGE=$(APP)
 
 .DEFAULT_GOAL := help
 
@@ -105,11 +104,11 @@ minikube-build: ## Build Docker image into Minikube
 			-t $(IMAGE):$(VERSION) .
 
 .PHONY: minikube-deploy
-minikube-deploy: minikube-build minikube-config ## Deploy application into Minikube
+minikube-deploy: minikube-build ## Deploy application into Minikube
 	@echo -e "$(OK_COLOR)[$(APP)] Deploy application to local Kubernetes$(NO_COLOR)"
-	@../deploy/kubernetes.sh minikube local create $(VERSION)
+	@./scripts/kubernetes.sh -c minikube -e local -p create -a $(APP) -d deploy/k8s/ -t $(VERSION)
 
 .PHONY: minikube-undeploy
 minikube-undeploy: ## Undeploy application into Minikube
 	@echo -e "$(OK_COLOR)[$(APP)] Deploy application to local Kubernetes$(NO_COLOR)"
-	@../deploy/kubernetes.sh minikube local destroy latest
+	@./scripts/kubernetes.sh -c minikube -e local -p destroy -a $(APP) -d deploy/k8s/ -t $(VERSION)
