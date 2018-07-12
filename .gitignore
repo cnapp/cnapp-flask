@@ -4,11 +4,11 @@
 
 # Python
 *.pyc
-python-flask/venv
-python-flask/build
-python-flask/.cache
-python-flask/.tox
-python-flask/.coverage
-python-flask/cnapps/.pytest_cache/
-python-flask/htmlcov/
-python-flask/__pycache__/
+venv
+build
+.cache
+.tox
+.coverage
+.pytest_cache/
+htmlcov/
+__pycache__/
