@@ -1,5 +1,11 @@
 # CNAPPS / Python Flask
 
+Features:
+
+* [x] Logging
+* [x] Metrics
+* [ ] Tracing
+
 ## Local
 
 Execute in local:
