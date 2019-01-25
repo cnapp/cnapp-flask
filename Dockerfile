@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2018-2019 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.6-slim
+# FROM python:3.6-slim
+FROM python:3.6-alpine
 
 LABEL summary="Python Flask version of Cnapps" \
       description="Python Flask version of Cnapps" \
@@ -23,18 +24,36 @@ LABEL summary="Python Flask version of Cnapps" \
 ARG http_proxy
 ARG https_proxy
 
-RUN apt-get update -o Acquire::ForceIPv4=true \
-    && apt-get install -o Acquire::ForceIPv4=true -y python-dev gcc curl \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update -o Acquire::ForceIPv4=true \
+#     && apt-get install -o Acquire::ForceIPv4=true -y python-dev gcc curl \
+#     && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache --virtual .build-deps \
+    curl gcc python3-dev musl-dev linux-headers libffi-dev openssl-dev
+
 RUN curl -o /get-pip.py https://bootstrap.pypa.io/get-pip.py \
     && python3 get-pip.py
 
-ADD ./requirements.txt /srv/
+RUN pip3 install gunicorn==19.9.0
+
+RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+
 WORKDIR /srv
-RUN pip3 install -r requirements.txt \
-    && pip3 install gunicorn==19.7.1
+
+COPY ./deps /srv/deps/
+
+COPY pyproject.* /srv/
+COPY poetry.lock /srv/
+
+RUN /root/.poetry/bin/poetry config settings.virtualenvs.create false
+RUN /root/.poetry/bin/poetry install -n --no-dev
+
+RUN pip3 install gunicorn==19.9.0
 
 ADD . /srv
+
+RUN addgroup -S cnapps \
+    && adduser -S cnapps -G cnapps
+USER cnapps
 
 EXPOSE 9191
 

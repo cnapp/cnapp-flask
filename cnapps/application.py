@@ -32,7 +32,6 @@ from cnapps import exceptions
 from cnapps.middleware.config import environment
 from cnapps.middleware.auth import jwt as jwt_auth
 from cnapps.middleware.metrics import prometheus
-from cnapps.middleware.tracing import opentracing
 from cnapps import settings
 from cnapps import version
 from cnapps import web
@@ -166,9 +165,6 @@ def setup_tracing(app):
     """
 
     LOGGER.debug("Setup traces")
-    tracer = opentracing.init_tracer(settings.APPNAME)
-    if tracer:
-        app.tracer = tracer
 
 
 def setup_authentication(app):

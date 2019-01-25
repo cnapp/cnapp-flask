@@ -16,8 +16,6 @@ import logging
 
 import flask
 
-from cnapps.middleware.tracing import opentracing
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -43,7 +41,7 @@ def make_webservice_response(data, status_code=200, message=None):
     return response
 
 
-def make_response(message, code, parent_span=None):
+def make_response(message, code):
     """Creates a HTTP response in JSON (application/json content-type)
 
     Args:
@@ -56,12 +54,6 @@ def make_response(message, code, parent_span=None):
         A HTTP response.
     """
 
-    if parent_span:
-        opentracing.set_tag_response_code(parent_span, code)
-        with flask.current_app.tracer.start_span(
-            "response", child_of=parent_span
-        ) as span:
-            span.log_kv({"response": message.json})
     resp = message
     resp.status_code = code
     return resp

@@ -20,7 +20,6 @@ from cnapps.api import commons
 from cnapps import checker
 from cnapps.middleware.auth import request
 from cnapps.middleware.metrics import prometheus
-from cnapps.middleware.tracing import opentracing
 
 
 REST = flask.Blueprint("health", __name__)
@@ -39,16 +38,6 @@ def api_health_status():
     """
 
     LOGGER.info("Check health")
-
-    with flask.current_app.tracer.start_span("health") as parent_span:
-        opentracing.set_common_tags(parent_span, "health", "GET")
-
-        with flask.current_app.tracer.start_span(
-            "check", child_of=parent_span
-        ) as span:
-            status = checker.global_status()
-            span.log_kv({"status": status})
-            prometheus.API_USER.labels(API_PATH, 200, "None").inc()
-            return commons.make_response(
-                flask.jsonify(status), 200, parent_span
-            )
+    status = checker.global_status()
+    prometheus.API_USER.labels(API_PATH, 200, "None").inc()
+    return commons.make_response(flask.jsonify(status), 200)

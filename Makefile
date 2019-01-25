@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2018-2019 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,10 +49,11 @@ clean: ## Cleanup
 .PHONY: init
 init: ## Initialize Python environment (python=x.y)
 	@echo -e "$(OK_COLOR)[$(APP)] Initialize environnement$(NO_COLOR)"
-	@test -d venv || virtualenv --python=/usr/bin/python3.6 venv
-	@. venv/bin/activate && \
-		pip3 install -r requirements.txt && \
-		pip3 install -r requirements-dev.txt
+	@test -f ~/.poetry/bin/poetry || curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python3
+	@test -d venv || python3 -m venv venv
+	@. venv/bin/activate && pip3 install --upgrade pip
+	@. venv/bin/activate && ~/.poetry/bin/poetry install
+	@. venv/bin/activate && pip3 install gunicorn==19.9.0
 
 .PHONY: pyfmt
 pyfmt: ## Python formatting
