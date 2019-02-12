@@ -32,6 +32,7 @@ from cnapps import exceptions
 from cnapps.middleware.config import environment
 from cnapps.middleware.auth import jwt as jwt_auth
 from cnapps.middleware.metrics import prometheus
+from cnapps.middleware.tracing import opencensus
 from cnapps import settings
 from cnapps import version
 from cnapps import web
@@ -151,7 +152,7 @@ def setup_metrics(app):
         app ([flask.Flask]): the main application
     """
 
-    LOGGER.debug("Setup Prometheus metrics")
+    LOGGER.debug("Setup metrics")
     app.before_request(prometheus.before_request)
     app.after_request(prometheus.after_request)
     app.register_blueprint(prometheus.REST)
@@ -165,6 +166,7 @@ def setup_tracing(app):
     """
 
     LOGGER.debug("Setup traces")
+    middleware = opencensus.setup(app)
 
 
 def setup_authentication(app):

@@ -37,7 +37,7 @@ def make_webservice_response(data, status_code=200, message=None):
     response.data = data
     response.headers["Content-Type"] = "application/json"
     LOGGER.info("Response: %s %s", status_code, data)
-    LOGGER.info("Response: %s", response)
+    # LOGGER.info("Response: %s", response)
     return response
 
 

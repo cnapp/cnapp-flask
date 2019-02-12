@@ -90,3 +90,14 @@ def show_metrics():
     resp = flask.make_response(output, 200)
     resp.headers["Content-type"] = exposition.CONTENT_TYPE_LATEST
     return resp
+
+
+# def setup():
+#     """Setup Prometheus metrics using Opencensus.
+
+#     """
+
+#     LOGGER.debug("Configure metrics using Prometheus exporter")
+#     # todo
+
+
