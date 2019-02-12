@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2018-2019 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,24 +16,6 @@ from cnapps.api.v1 import core
 
 
 API_DOC_AUTH = "%s.auth" % core.PATH
-
-API_DOC_CONTACTS = "%s.contacts" % core.PATH
-
-API_DOC_CUSTOMERS = "%s.customers" % core.PATH
-
-API_DOC_ENVIRONMENTS = "%s.environments" % core.PATH
-
-API_DOC_ENVIRONMENT_TYPES = "%s.environment_types" % core.PATH
-
-API_DOC_PROJECTS = "%s.projects" % core.PATH
-
-API_DOC_VMS = "%s.virtualmachines" % core.PATH
-
-API_DOC_PROVIDERS = "%s.providers" % core.PATH
-
-API_DOC_PROVIDER_TYPES = "%s.provider_types" % core.PATH
-
-API_DOC_IP_ADDRESS = "%s.ip_addresses" % core.PATH
 
 API_DOC_API_KEY = {
     "description": "Custom HTTP header which contains the token",

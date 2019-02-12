@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-APP="cnapp-flask"
+APP=cnapp-flask
 
 VERSION=$(shell \
 	grep RELEASE cnapps/version.py \
@@ -31,6 +31,7 @@ DB_ENGINE = "cockroachdb://cnapps@192.168.99.100:32007/cnapps?sslmode=disable"
 SHELL = /bin/bash
 DOCKER = docker
 
+NAMESPACE=cnapps
 IMAGE=$(APP)
 
 .DEFAULT_GOAL := help
