@@ -53,7 +53,7 @@ def check_sql():
 
     except exc.SQLAlchemyError as err:
         errors.stracktrace()
-        raise exceptions.DatabaseError("Can't check SQL version") from err
+        raise exceptions.DatabaseError("Can't check SQL version: %s" % str(err))
 
 
 def entity_id(prefix):
@@ -90,7 +90,7 @@ def list_entities(model, err_msg):
 
     except exc.SQLAlchemyError as err:
         errors.stracktrace()
-        raise exceptions.DatabaseError(err_msg) from err
+        raise exceptions.DatabaseError("%s - %s" % (err_msg, str(err)))
 
 
 def get_entity(model, id, err_msg):
@@ -114,7 +114,7 @@ def get_entity(model, id, err_msg):
 
     except exc.SQLAlchemyError as err:
         errors.stracktrace()
-        raise exceptions.DatabaseError(err_msg) from err
+        raise exceptions.DatabaseError("%s - %s" % (err_msg, str(err)))
 
 
 def add_entity(entity):
@@ -140,7 +140,7 @@ def add_entity(entity):
     except exc.SQLAlchemyError as err:
         errors.stracktrace()
         db.session.rollback()
-        raise exceptions.DatabaseError(CREATE_ERR) from err
+        raise exceptions.DatabaseError("%s - %s" % (CREATE_ERR, str(err)))
 
 
 def delete_entity(entity, soft=True):
@@ -160,7 +160,7 @@ def delete_entity(entity, soft=True):
     except exc.SQLAlchemyError as err:
         errors.stracktrace()
         db.session.rollback()
-        raise exceptions.DatabaseError(DELETE_ERR) from err
+        raise exceptions.DatabaseError("%s - %s" % (DELETE_ERR, str(err)))
 
 
 def update_entity(entity):
@@ -178,4 +178,4 @@ def update_entity(entity):
     except exc.SQLAlchemyError as err:
         errors.stracktrace()
         db.session.rollback()
-        raise exceptions.DatabaseError(UPDATE_ERR) from err
+        raise exceptions.DatabaseError("%s - %s" % (UPDATE_ERR, str(err)))
